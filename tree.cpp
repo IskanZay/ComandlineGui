@@ -75,33 +75,50 @@ void tree::add(file_data* data)
 
 void tree::create_file_csv()
 {
-    QFile file("D:/VFS/FileSystem.csv");
+    QFile file(m_base_path + "/FileSystem.csv");
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
     {
+        QMessageBox::warning(nullptr, "Warning", "Error open file");
         return;
     }
 
     QTextStream out(&file);
 
     out << "id;parent_id;name;type;content\n";
-    out << "1;0;docs1;directory;\t\n";
-    out << "2;0;docs2;directory;\t\n";
-    out << "3;1;report.txt;file;hello world\n";
-    out << "4;2;report2.txt;file;hello world2\n";
+    out << "1;0;etc;directory;\t\n";
+    out << "2;0;lib;directory;\t\n";
+    out << "3;0;proc;directory;\t\n";
+    out << "4;0;run;directory;\t\n";
+    out << "5;0;motd.txt;file;=========================================\\n"
+                   "    Welcome to my virtual file system    \\n"
+                   "=========================================\\n"
+                   "\\n"
+                   "* System:         Linux\\n"
+                   "\\n"
+                   "=========================================\\n";
+    out << '\n';
+    out << "6;1;passwd.txt;file;\root:x:0:0:root:/root:/bin/ash\\n"
+                   "daemon:x:2:2:daemon:/sbin:/sbin/nologin\\n"
+                   "adm:x:3:4:adm:/var/adm:/sbin/nologin\\n"
+                   "lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin\\n"
+                   "sync:x:5:0:sync:/sbin:/bin/sync\\n"
+                   "halt:x:7:0:halt:/sbin:/sbin/halt\n";
 
+    out << "7;1;apk;directory;\t\n";
+    out << "8;7;keys.txt;file;something\\n";
     file.close();
 }
 
-void tree::delete_csv_file(const QString& filePath)
+void tree::delete_csv_file()
 {
-    QFile file(filePath);
+    QFile file(m_base_path + "/FileSystem.csv");
     file.remove();
 }
 
 void tree::load_from_csv()
 {
-    QFile file("D:/VFS/FileSystem.csv");
+    QFile file(m_base_path + "/FileSystem.csv");
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
     {
@@ -178,7 +195,11 @@ void tree::create_file_system(file_data* data, const QString& currentPath)
         if (file.open(QIODevice::WriteOnly | QIODevice::Text))
         {
             QTextStream out(&file);
-            out << data->get_content();
+            QString content = data->get_content();
+
+            content.replace("\\n", "\n");
+
+            out << content;
             file.close();
         }
     }

@@ -9,6 +9,7 @@
 #include <QTextStream>
 #include <QMap>
 #include <QDebug>
+#include <QMessageBox>
 
 class tree
 {
@@ -28,7 +29,7 @@ public:
     file_data* find(int id, file_data* data);
 
     void create_file_csv();
-    void delete_csv_file(const QString& filePath = "D:/VFS/FileSystem.csv");
+    void delete_csv_file();
     void load_from_csv();
     void create_file_system();
     void create_file_system(file_data* data, const QString& currentPath);

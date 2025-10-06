@@ -2,10 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "parser.h"
-#include "tree.h"
 #include <QProcess>
 #include <QMessageBox>
+#include "parser.h"
+#include "tree.h"
+#include "command_fabric.h"
+#include "script_reader.h"
+#include <QStringList>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,8 +30,13 @@ private slots:
 private:
     Ui::MainWindow *ui;
     tree* m_tree;
+    QString current_directory = "/";
 
+    QString script_path;
+    QString VFS_path;
+    void print_motd();
     void setup_file_system();
+
 
 };
 #endif // MAINWINDOW_H

@@ -11,6 +11,7 @@ void Parser::Parse(QString str)
     QString argument;
     str += " ";
 
+
     for (int i = space_pos + 1;i < str.length();i++)
     {
         if (str[i] == '"')
